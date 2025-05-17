@@ -16,6 +16,7 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
+  // 현재 게시글에 달린 댓글들을 서버에서 불러오기
   const loadComments = async () => {
     const data = await fetchComments(post.id);
     setComments(data);
@@ -29,35 +30,39 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
 
   if (!post) return null;
 
+  // 새로운 댓글 작성 함수
   const handleAddComment = async () => {
     if (!commentText.trim()) {
       alert("댓글 내용을 입력하세요.");
       return;
     }
-    await createComment(post.id, commentText);
-    setCommentText("");
-    loadComments();
+    await createComment(post.id, commentText); // 서버에 댓글 등록
+    setCommentText(""); // 입력창 초기화
+    loadComments(); // 댓글 목록 갱신
   };
 
+  // 댓글 삭제 함수
   const handleDeleteComment = async (comment) => {
     await deleteComment(comment.id);
-    loadComments();
+    loadComments(); // 삭제 후 댓글 목록 갱신
   };
 
+  // 수정 시작 시 호출: 수정 대상 ID 설정 + 기존 내용 채우기
   const startEditComment = (comment) => {
     setEditingCommentId(comment.id);
     setEditCommentText(comment.content);
-    setOpenMenuId(null);
+    setOpenMenuId(null); // 메뉴 닫기
   };
 
+  // 댓글 수정 최종 저장 처리
   const handleEditComment = async (comment) => {
     if (!editCommentText.trim()) {
       alert("수정할 내용을 입력하세요.");
       return;
     }
     await updateComment(comment.id, editCommentText);
-    setEditingCommentId(null);
-    loadComments();
+    setEditingCommentId(null); // 수정 모드 종료
+    loadComments(); // 갱신
   };
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++

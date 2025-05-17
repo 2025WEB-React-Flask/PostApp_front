@@ -12,12 +12,15 @@ export default function PostList({ posts, onNewPost, onSelectPost }) {
 
   // 검색 처리 함수
   const handleSearch = () => {
-    const filtered = posts.filter(
-      (post) =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.writer.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredPosts(filtered); // 검색된 게시물 목록으로 갱신
+    const filtered = posts.filter((post) => {
+      const title = post.title || "";
+      const writer = post.author || ""; // writer 없으면 author 사용
+      return (
+        title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        writer.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    setFilteredPosts(filtered);
   };
 
   // 엔터 키로 검색 실행
