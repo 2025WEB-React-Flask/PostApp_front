@@ -185,43 +185,41 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
 
             {/* ⋮ 메뉴 */}
             {user &&
-              (user.username === comment.author ||
-                user.username === post.author ||
-                user.is_admin) && (
-                <div className="relative">
-                  <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={() =>
-                      setOpenMenuId(
-                        openMenuId === comment.id ? null : comment.id
-                      )
-                    }
-                  >
-                    <MoreVertical size={16} />
-                  </button>
-                  {/* 댓글 ⋮ 메뉴 안 */}
-                  {openMenuId === comment.id && (
-                    <div className="absolute right-0 mt-1 bg-white border rounded shadow-md z-10">
-                      {user.username === comment.author && (
-                        <button
-                          className="flex items-center space-x-1 px-4 py-2 hover:bg-gray-100 text-sm w-full text-left"
-                          onClick={() => startEditComment(comment)}
-                        >
-                          <Edit size={14} />
-                          <span>수정</span>
-                        </button>
-                      )}
+            (user.username === comment.author ||
+              user.username === post.author ||
+              user.is_admin) ? (
+              <div className="relative">
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={() =>
+                    setOpenMenuId(openMenuId === comment.id ? null : comment.id)
+                  }
+                >
+                  <MoreVertical size={16} />
+                </button>
+
+                {openMenuId === comment.id ? (
+                  <div className="absolute right-0 mt-1 bg-white border rounded shadow-md z-10">
+                    {user.username === comment.author && (
                       <button
-                        className="flex items-center space-x-1 px-4 py-2 hover:bg-gray-100 text-sm w-full text-left text-red-500"
-                        onClick={() => handleDeleteComment(comment)}
+                        className="flex items-center space-x-1 px-4 py-2 hover:bg-gray-100 text-sm w-full text-left"
+                        onClick={() => startEditComment(comment)}
                       >
-                        <Trash2 size={14} />
-                        <span>삭제</span>
+                        <Edit size={14} />
+                        <span>수정</span>
                       </button>
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                    <button
+                      className="flex items-center space-x-1 px-4 py-2 hover:bg-gray-100 text-sm w-full text-left text-red-500"
+                      onClick={() => handleDeleteComment(comment)}
+                    >
+                      <Trash2 size={14} />
+                      <span>삭제</span>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         ))}
 
