@@ -133,19 +133,15 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
               <div>작성자: {post.author}</div>
               <div>
                 작성일:{" "}
-                {new Date(post.created_at)
-                  .toLocaleString("ko-KR", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                  })
-                  .replace(".", "-")
-                  .replace(".", "-")
-                  .replace(".", "")
-                  .replace(" ", " ")}
+                {new Date(post.created_at).toLocaleString("ko-KR", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                  timeZone: "Asia/Seoul", // 명시적으로 설정 (중요!)
+                })}
               </div>
               <div>조회수: {post.view}</div>
             </div>

@@ -89,19 +89,15 @@ export default function PostList({ posts, onNewPost, onSelectPost }) {
             </div>
             <div className="col-span-2">{post.author}</div>
             <div className="col-span-2">
-              {new Date(post.created_at)
-                .toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })
-                .replace(".", "-")
-                .replace(".", "-")
-                .replace(".", "")
-                .replace(" ", " ")}
+              {new Date(post.created_at).toLocaleString("ko-KR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+                timeZone: "Asia/Seoul", // 명시적으로 설정 (중요!)
+              })}
             </div>
             <div className="col-span-1">{post.view}</div>
           </li>
