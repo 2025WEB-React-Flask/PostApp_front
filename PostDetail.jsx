@@ -7,6 +7,9 @@ import {
   updateComment,
 } from "./PostService";
 
+import { summarizePost } from "./PostService";
+import SummaryModal from "./SummaryModal";
+
 export default function PostDetail({ post, onBack, onEdit, onDelete }) {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -15,6 +18,9 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const [summary, setSummary] = useState("");
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
   // 현재 게시글에 달린 댓글들을 서버에서 불러오기
   const loadComments = async () => {
@@ -65,6 +71,16 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
     loadComments(); // 갱신
   };
 
+  const handleSummarize = async () => {
+    try {
+      const result = await summarizePost(post.content);
+      setSummary(result);
+      setIsSummaryOpen(true);
+    } catch (err) {
+      alert("요약 실패: " + (err.response?.data?.message || err.message));
+    }
+  };
+
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++
   if (!post) return null; // 게시물이 없으면 아무것도 렌더링하지 않음
   return (
@@ -112,25 +128,34 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
           <h3 className="text-3xl font-semibold text-gray-900 mb-2 break-words">
             {post.title}
           </h3>
-          <div className="flex text-sm text-gray-600 space-x-4">
-            <div>작성자: {post.author}</div>
-            <div>
-              작성일:{" "}
-              {new Date(post.created_at)
-                .toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })
-                .replace(".", "-")
-                .replace(".", "-")
-                .replace(".", "")
-                .replace(" ", " ")}
+          <div className="flex justify-between items-center text-sm text-gray-600">
+            <div className="flex space-x-4">
+              <div>작성자: {post.author}</div>
+              <div>
+                작성일:{" "}
+                {new Date(post.created_at)
+                  .toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })
+                  .replace(".", "-")
+                  .replace(".", "-")
+                  .replace(".", "")
+                  .replace(" ", " ")}
+              </div>
+              <div>조회수: {post.view}</div>
             </div>
-            <div>조회수: {post.view}</div>
+
+            <button
+              onClick={handleSummarize}
+              className="bg-blue-500 text-white px-3 py-1.5 rounded-md hover:bg-blue-600"
+            >
+              요약 보기
+            </button>
           </div>
         </div>
         <div className="py-4">
@@ -138,6 +163,12 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed min-h-32">
             {post.content}
           </p>
+          {isSummaryOpen && (
+            <SummaryModal
+              content={summary}
+              onClose={() => setIsSummaryOpen(false)}
+            />
+          )}
         </div>
       </div>
       {/*+++++++++++++++++++++++++++*/}

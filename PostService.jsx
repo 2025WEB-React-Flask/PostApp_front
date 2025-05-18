@@ -80,3 +80,8 @@ export const updateComment = async (commentId, content) => {
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 게시글 요약 요청
+export const summarizePost = async (content) => {
+  const response = await axios.post("/api/summarize", { content });
+  return response.data.summary;
+};
