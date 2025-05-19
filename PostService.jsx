@@ -48,7 +48,7 @@ export const deletePost = async (id) => {
 
 // 게시물 조회수 증가
 export const incrementPostView = async (id) => {
-  const response = await axios.post(`/api/posts/${id}/view`);
+  const response = await axios.post(`/api/posts/${id}/views`);
   return response.data;
 };
 
