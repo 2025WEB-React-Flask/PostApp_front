@@ -134,7 +134,7 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
               <div>
                 작성일:{" "}
                 {new Date(
-                  new Date(post.created_at).getTime() - 9 * 60 * 60 * 1000
+                  new Date(post.created_at).getTime() + 9 * 60 * 60 * 1000
                 ).toLocaleString("ko-KR", {
                   year: "numeric",
                   month: "2-digit",
@@ -144,7 +144,7 @@ export default function PostDetail({ post, onBack, onEdit, onDelete }) {
                   hour12: false,
                 })}
               </div>
-              <div>조회수: {post.view}</div>
+              <div>조회수: {post.views}</div>
             </div>
 
             <button

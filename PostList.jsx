@@ -90,7 +90,7 @@ export default function PostList({ posts, onNewPost, onSelectPost }) {
             <div className="col-span-2">{post.author}</div>
             <div className="col-span-2">
               {new Date(
-                new Date(post.created_at).getTime() - 9 * 60 * 60 * 1000
+                new Date(post.created_at).getTime() + 9 * 60 * 60 * 1000
               ).toLocaleString("ko-KR", {
                 year: "numeric",
                 month: "2-digit",
@@ -100,7 +100,7 @@ export default function PostList({ posts, onNewPost, onSelectPost }) {
                 hour12: false,
               })}
             </div>
-            <div className="col-span-1">{post.view}</div>
+            <div className="col-span-1">{post.views}</div>
           </li>
         ))}
       </ul>
